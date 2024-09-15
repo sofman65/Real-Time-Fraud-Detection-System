@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@material-tailwind/react": "^2.1.10",
+    "chartjs-adapter-date-fns": "^3.0.0"
+  }
+}
