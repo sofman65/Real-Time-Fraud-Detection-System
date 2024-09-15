@@ -1,0 +1,12 @@
+# Ignore Python virtual environments
+venv/
+
+# Ignore data files
+FraudDetApp/ml_models/*.csv
+
+# Ignore Node modules
+FraudDetApp-frontend/node_modules/
+
+# Ignore env
+.env
+
