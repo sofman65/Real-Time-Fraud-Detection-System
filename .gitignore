@@ -10,3 +10,6 @@ FraudDetApp-frontend/node_modules/
 # Ignore env
 .env
 
+# Ignore large data files
+FraudDetApp/myapi/ml_models/models/*.csv
+
