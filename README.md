@@ -81,11 +81,11 @@ To set up the project, follow these steps:
      npm install
      ```
 
-4. **Run the backend**:
-   - Start the Django server:
-     ```bash
-     python manage.py runserver
-     ```
+4. **Run the Django Application with Daphne**: Use the following command to start the application:
+
+   ```bash
+   daphne FraudDetApp.asgi:application
+   ```
 
 5. **Run the frontend**:
    - Start the React app:
@@ -94,51 +94,8 @@ To set up the project, follow these steps:
      ```
 
 ---
-## Dataset
-
-The dataset used for this project is not included in the repository due to size constraints. You can download the dataset from Kaggle by following these steps:
-
-1. **Create a Kaggle Account**: If you don't have one, sign up for a free account at [Kaggle](https://www.kaggle.com/).
-
-2. **Find the Dataset**: Search for the dataset you need. For example, you can find the "Credit Card Fraud Detection" dataset [here](https://www.kaggle.com/dalpozz/creditcard-fraud).
-
-3. **Download the Dataset**: Click on the "Download" button to download the dataset as a ZIP file.
-
-4. **Extract the Files**: Unzip the downloaded file and place the relevant CSV files in the `FraudDetApp/myapi/ml_models/models/` directory of the project.
-
-5. **Update the Project**: Ensure that the dataset is correctly referenced in your code.
-
-By following these steps, you can set up the project with the necessary data for testing and development.
 
 ## Usage
 
 Once both the backend and frontend are running, you can access the application at `http://localhost:3000`. The real-time fraud detection system will display transaction data and predictions as they are processed.
-
----
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeature`).
-3. Make your changes and commit them (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature/YourFeature`).
-5. Open a pull request.
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Acknowledgments
-
-- Thanks to the contributors and the open-source community for their support.
-- Special thanks to the authors of the machine learning libraries used in this project.
-
----
-
 
