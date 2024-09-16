@@ -94,6 +94,21 @@ To set up the project, follow these steps:
      ```
 
 ---
+## Dataset
+
+The dataset used for this project is not included in the repository due to size constraints. You can download the dataset from Kaggle by following these steps:
+
+1. **Create a Kaggle Account**: If you don't have one, sign up for a free account at [Kaggle](https://www.kaggle.com/).
+
+2. **Find the Dataset**: Search for the dataset you need. For example, you can find the "Credit Card Fraud Detection" dataset [here](https://www.kaggle.com/dalpozz/creditcard-fraud).
+
+3. **Download the Dataset**: Click on the "Download" button to download the dataset as a ZIP file.
+
+4. **Extract the Files**: Unzip the downloaded file and place the relevant CSV files in the `FraudDetApp/myapi/ml_models/models/` directory of the project.
+
+5. **Update the Project**: Ensure that the dataset is correctly referenced in your code.
+
+By following these steps, you can set up the project with the necessary data for testing and development.
 
 ## Usage
 
