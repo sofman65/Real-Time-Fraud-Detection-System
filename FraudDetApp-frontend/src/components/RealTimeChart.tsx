@@ -11,6 +11,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Card, CardBody, Typography, Alert } from '@material-tailwind/react';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 // Register necessary components for Chart.js
 ChartJS.register(
@@ -20,7 +21,8 @@ ChartJS.register(
     LineElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    zoomPlugin
 );
 
 interface Prediction {
@@ -83,8 +85,8 @@ const RealTimeChart: React.FC<RealTimeChartProps> = ({ predictions, transactions
     const chartOptions = {
         responsive: true,
         interaction: {
-            mode: 'index' as const,
-            intersect: false,
+            mode: 'nearest' as const,
+            intersect: true,
         },
         scales: {
             y: {
@@ -96,6 +98,9 @@ const RealTimeChart: React.FC<RealTimeChartProps> = ({ predictions, transactions
                 },
                 min: 0,
                 max: 1,
+                grid: {
+                    color: '#e0e0e0', // Light grid lines
+                },
             },
             y1: {
                 type: 'linear' as const,
@@ -105,6 +110,9 @@ const RealTimeChart: React.FC<RealTimeChartProps> = ({ predictions, transactions
                     text: 'Transaction Amount ($)',
                 },
                 beginAtZero: true,
+                grid: {
+                    color: '#e0e0e0', // Light grid lines
+                },
             },
         },
         plugins: {
@@ -112,22 +120,31 @@ const RealTimeChart: React.FC<RealTimeChartProps> = ({ predictions, transactions
                 callbacks: {
                     label: function (tooltipItem: any) {
                         const value = tooltipItem.raw;
-
-                        // Check if the value is a number before formatting
+                        const label = tooltipItem.dataset.label;
                         if (typeof value === 'number') {
-                            if (tooltipItem.dataset.label === 'Transaction Amount') {
-                                return `Amount: $${value.toFixed(2)}`;
-                            }
-                            return `${tooltipItem.dataset.label}: ${value.toFixed(2)}`;
+                            return `${label}: ${value.toFixed(2)}`;
                         }
-
-                        // Fallback for non-number types
-                        return `${tooltipItem.dataset.label}: ${value}`;
+                        return `${label}: ${value}`;
                     },
                 },
             },
             legend: {
                 position: 'top' as const,
+            },
+            zoom: {
+                pan: {
+                    enabled: true,
+                    mode: 'xy' as const, // Ensure mode is correctly typed
+                },
+                zoom: {
+                    wheel: {
+                        enabled: true,
+                    },
+                    pinch: {
+                        enabled: true,
+                    },
+                    mode: 'xy' as const, // Ensure mode is correctly typed
+                },
             },
         }
     };
@@ -136,7 +153,7 @@ const RealTimeChart: React.FC<RealTimeChartProps> = ({ predictions, transactions
     useEffect(() => {
         const latestTransaction = transactions[transactions.length - 1];
         if (latestTransaction && latestTransaction.Class === 1) {
-            const alertMessage = `🚨 Fraud detected at ${new Date(latestTransaction.Time * 1000).toLocaleTimeString()}`;
+            const alertMessage = `🚨 Fraud detected at ${new Date(latestTransaction.Time * 1000).toLocaleTimeString()} for $${latestTransaction.Amount.toFixed(2)}`;
             setFraudAlert(alertMessage);
         } else {
             setFraudAlert(null);
@@ -152,7 +169,11 @@ const RealTimeChart: React.FC<RealTimeChartProps> = ({ predictions, transactions
                     </Typography>
 
                     {fraudAlert && (
-                        <Alert color="red" icon={<span>⚠️</span>} className="mb-4 text-center">
+                        <Alert
+                            color="red"
+                            icon={<span>⚠️</span>}
+                            className="mb-4 text-center font-bold text-lg p-4 border-2 border-red-600 bg-red-100 animate-bounce"
+                        >
                             {fraudAlert}
                         </Alert>
                     )}
@@ -167,9 +188,10 @@ const RealTimeChart: React.FC<RealTimeChartProps> = ({ predictions, transactions
                     <div className="mt-2 max-h-64 overflow-y-auto border border-gray-200 rounded-md p-4 bg-gray-50">
                         <ul>
                             {transactions.map((transaction, index) => (
-                                <li key={index} className="text-sm text-gray-700 mb-1">
+                                <li key={index} className={`text-sm mb-1 ${transaction.Class === 1 ? 'text-red-600 font-bold' : 'text-gray-700'}`}>
                                     <strong>Time:</strong> {new Date(transaction.Time * 1000).toLocaleTimeString()} -
                                     <strong> Amount:</strong> ${transaction.Amount.toFixed(2)}
+                                    {transaction.Class === 1 && <span className="ml-2 text-red-600">🚨 Fraud</span>}
                                 </li>
                             ))}
                         </ul>
